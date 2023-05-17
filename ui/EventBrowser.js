@@ -30,6 +30,7 @@ exports.EventBrowser = void 0;
 var react_1 = __importStar(require("react"));
 var react_meteor_data_1 = require("meteor/react-meteor-data");
 var communities_1 = require("../communities/communities");
+var people_1 = require("../people/people");
 var react_select_1 = __importDefault(require("react-select"));
 var EventBrowser = function () {
     // The useTracker is a meteor developed hook that makes possibleEvents be in
@@ -38,22 +39,33 @@ var EventBrowser = function () {
     // The selectedEvent state variable will hold what event is being selected
     // on the selector at the moment.
     var _a = (0, react_1.useState)(''), selectedEvent = _a[0], setSelectedEvent = _a[1];
-    // The visiblePeople state variable will have an array with all the People
-    // objects of people that are registered to a given event. The value of
-    // this variable is linked to the value of selectedEvent by the logic
-    // implemented in handleChangeEvent
-    var _b = (0, react_1.useState)([]), visiblePeople = _b[0], setVisiblePeople = _b[1];
+    var queryPeopleFromSelectedEvent = function () {
+        // Get id of current event
+        var event_id;
+        var event_object = communities_1.Communities.find({ name: selectedEvent }).fetch()[0];
+        // Error would be thrown the first time this runs, for selectedEvent would
+        // be set to "", and the return of the previous query would be an empty array
+        if (event_object) {
+            event_id = event_object._id;
+        }
+        // Get all people with a reference to that event
+        return people_1.People.find({ communityId: event_id }).fetch();
+    };
+    // Set useTracker hook with previous defined function as the callback
+    var visiblePeople = (0, react_meteor_data_1.useTracker)(function () { return (queryPeopleFromSelectedEvent()); });
     // The handleChangeEvent function is responsible for fetching all the people
     // data associated to an event once an event is selected.
-    var handleChangeEvent = function (e) {
-        // ! TODO !
-        // Need to implement the request for the apropriate people.
+    var handleChangeEvent = function (value, action) {
+        setSelectedEvent(value.value);
     };
     return (react_1["default"].createElement("div", null,
-        react_1["default"].createElement(react_select_1["default"], { defaultValue: { label: "Select an event", value: "Select an event" }, options: 
+        react_1["default"].createElement(react_select_1["default"], { defaultValue: { label: "Select an event", value: "Select an event" }, onChange: handleChangeEvent, options: 
             // In here, for each element in the possibleEvents array
             // we create a corresponding suitable object for the Select
             // component's options attribute.
-            possibleEvents.map(function (ev) { return ({ value: ev.name, label: ev.name }); }) })));
+            possibleEvents.map(function (ev) { return ({ value: ev.name, label: ev.name }); }) }),
+        react_1["default"].createElement("ul", null, 
+        // Create a prototype list from the visiblePeople data
+        visiblePeople.map(function (person, index) { return (react_1["default"].createElement("li", { key: index }, person.firstName + ' ' + person.lastName)); }))));
 };
 exports.EventBrowser = EventBrowser;
