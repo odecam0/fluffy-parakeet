@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "preserveSymlinks": true,
+    "baseUrl": "./",
+    "paths": {
+      "meteor/*": [
+        "node_modules/@types/meteor/*",
+        ".meteor/local/types/packages.d.ts"
+      ]
+    },
+    "jsx": "react",
+    "esModuleInterop": true,
+    "lib": ["ES2015", "dom"]
+  },
+  "include": ["ui/*.tsx"]
+}

@@ -1,8 +1,6 @@
 import React from 'react';
-import { Texts } from '../infra/constants';
+import { EventBrowser } from './EventBrowser';
 
 export const App = () => (
-  <div>
-    <h1>{Texts.HOME_TITLE}</h1>
-  </div>
+  <EventBrowser/>
 );
