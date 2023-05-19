@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-
-import { PeopleInterface, Event } from './CollectionTypes';
+import React, { useState, useEffect } from 'react';
+import { PeopleInterface } from './CollectionTypes';
 
 // formatDate will return a string with the date formated as MM/DD/YYYY, HH:mm
 const formatDate = (date: Date) => {
-    return date.getMonth() + '/' + date.getDay() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes();
+    return String(date.getMonth()).padStart(2, '0') + '/' +
+        String(date.getDay()).padStart(2, '0') + '/' +
+        String(date.getFullYear()).padStart(2, '0') + ', ' +
+        String(date.getHours()).padStart(2, '0') + ':' +
+        String(date.getMinutes()).padStart(2, '0');
 }
 
 // Defining what possible props Peopleline can receive
@@ -24,6 +27,18 @@ export const PeopleLine = (props: PeopleLineProps) => {
     // When checkin in, call an async function that waits 5 seconds before setting
     // canCheckOut to true
     const [canCheckOut, setCanCheckOut] = useState<boolean>(false);
+
+    // Checking if anyone can check-out one time when rendering the component, because
+    // if someone check in and change rerender the page, the canCheckOut would go back
+    // to false, and we would not be able to checkthe person out
+    useEffect(() => {
+        if (person.checkInDate && !person.checkOutDate) {
+            const date_now = new Date;
+            if (date_now.getTime() - person.checkInDate.getTime() > 5000) {
+                setCanCheckOut(true);
+            }
+        }
+    })
 
     // This function implements the waiting of 5 seconds before one can checkout
     // a person after checking in
@@ -47,7 +62,7 @@ export const PeopleLine = (props: PeopleLineProps) => {
     // button at all.
     const whatCheckInButton = () => {
         let checkWhat = ""
-        let onClickCallBack;
+        let onClickCallBack : ()=>void;
 
         if (!person.checkInDate) {
             // If person has not been checked in, a check-in button should be shown

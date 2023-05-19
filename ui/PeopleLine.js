@@ -63,7 +63,11 @@ exports.PeopleLine = void 0;
 var react_1 = __importStar(require("react"));
 // formatDate will return a string with the date formated as MM/DD/YYYY, HH:mm
 var formatDate = function (date) {
-    return date.getMonth() + '/' + date.getDay() + '/' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes();
+    return String(date.getMonth()).padStart(2, '0') + '/' +
+        String(date.getDay()).padStart(2, '0') + '/' +
+        String(date.getFullYear()).padStart(2, '0') + ', ' +
+        String(date.getHours()).padStart(2, '0') + ':' +
+        String(date.getMinutes()).padStart(2, '0');
 };
 // This component is responsible for rendering a single line from the list of people
 // registered to a given event
@@ -72,6 +76,17 @@ var PeopleLine = function (props) {
     // When checkin in, call an async function that waits 5 seconds before setting
     // canCheckOut to true
     var _a = (0, react_1.useState)(false), canCheckOut = _a[0], setCanCheckOut = _a[1];
+    // Checking if anyone can check-out one time when rendering the component, because
+    // if someone check in and change rerender the page, the canCheckOut would go back
+    // to false, and we would not be able to checkthe person out
+    (0, react_1.useEffect)(function () {
+        if (person.checkInDate && !person.checkOutDate) {
+            var date_now = new Date;
+            if (date_now.getTime() - person.checkInDate.getTime() > 5000) {
+                setCanCheckOut(true);
+            }
+        }
+    });
     // This function implements the waiting of 5 seconds before one can checkout
     // a person after checking in
     var waitFiveToCheckOut = function () { return __awaiter(void 0, void 0, void 0, function () {

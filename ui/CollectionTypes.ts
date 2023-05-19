@@ -7,8 +7,8 @@ export interface PeopleInterface {
     lastName: string;
     title?: string;
     companyName?: string;
-    checkInDate?: string;
-    checkOutDate?: string;
+    checkInDate?: Date;
+    checkOutDate?: Date;
 }
 
 // Describing what are the possible values for a document within
