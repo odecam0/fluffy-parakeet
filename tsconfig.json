@@ -13,5 +13,5 @@
     "lib": ["ES2015", "dom"],
     "skipLibCheck": true
   },
-  "include": ["ui/*.tsx"]
+  "include": ["ui/*.tsx", "server/*.ts"]
 }

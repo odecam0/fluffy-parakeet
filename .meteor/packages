@@ -13,5 +13,3 @@ static-html@1.3.2
 react-meteor-data
 hot-module-replacement@0.5.3
 zodern:types
-autopublish
-insecure
