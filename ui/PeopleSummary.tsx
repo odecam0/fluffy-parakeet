@@ -43,7 +43,7 @@ export const PeopleSummary = (props : PeopleSummaryProps) => {
     // Then we create a string from the object created.
     let result = "";
     for (const item in groupedData) {
-      result += item + '(' + groupedData[item] + ') ,'
+      result += item + '(' + groupedData[item] + '), '
     }
 
     // And return the string without the last 2 characters, wich would be ' ,'

@@ -34,7 +34,7 @@ var PeopleSummary = function (props) {
         // Then we create a string from the object created.
         var result = "";
         for (var item in groupedData) {
-            result += item + '(' + groupedData[item] + ') ,';
+            result += item + '(' + groupedData[item] + '), ';
         }
         // And return the string without the last 2 characters, wich would be ' ,'
         return result.slice(0, -2);
