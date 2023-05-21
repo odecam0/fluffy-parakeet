@@ -11,7 +11,7 @@ var PeopleSummary = function (props) {
     // This component is implemented as 3 functions that return what will be shown
     // on the 3 lines of the summary, they all depend on the visiblePeople prop that
     // is passed, and will all be rendered every time that visiblePeople is updated
-    var peopleOnEventRightNow = function (visiblePeople) { return (visiblePeople.filter(function (item) { return item.checkInDate; }).length); };
+    var peopleOnEventRightNow = function (visiblePeople) { return (visiblePeople.filter(function (item) { return (item.checkInDate && !item.checkOutDate); }).length); };
     var peopleNotCheckedIn = function (visiblePeople) { return (visiblePeople.filter(function (item) { return !item.checkInDate; }).length); };
     var peopleByCompany = function (visiblePeople) {
         // Here we filter the visiblePeople array for the items that have a companyName set

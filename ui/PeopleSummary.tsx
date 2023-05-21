@@ -14,7 +14,7 @@ export const PeopleSummary = (props : PeopleSummaryProps) => {
   // is passed, and will all be rendered every time that visiblePeople is updated
 
   const peopleOnEventRightNow = (visiblePeople : PeopleInterface[]) => (
-    visiblePeople.filter(item => item.checkInDate).length
+    visiblePeople.filter(item => (item.checkInDate && !item.checkOutDate)).length
   );
 
   const peopleNotCheckedIn = (visiblePeople : PeopleInterface[]) => (
